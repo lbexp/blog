@@ -18,7 +18,7 @@ type router struct {
 	routes []route
 }
 
-func NewRouter() *router {
+func newRouter() *router {
 	return &router{routes: []route{}}
 }
 

@@ -1,18 +1,30 @@
 package utils_http
 
 import (
-	"context"
+	"fmt"
+	"net"
 	"net/http"
 )
 
-type contextKey string
+type server struct {
+	Router *router
+}
 
-func buildContext(req *http.Request, paramKeys, paramValues []string) *http.Request {
-	ctx := req.Context()
+func NewServer() *server {
+	router := newRouter()
 
-	for i := 0; i < len(paramKeys); i++ {
-		ctx = context.WithValue(ctx, contextKey(paramKeys[i]), paramValues[i])
+	return &server{Router: router}
+}
+
+func (s *server) Serve() {
+	l, err := net.Listen("tcp", ":8081")
+	if err != nil {
+		fmt.Printf("Error starting server: %s\n", err)
 	}
 
-	return req.WithContext(ctx)
+	fmt.Println("Server started on ", l.Addr().String())
+
+	if err := http.Serve(l, s.Router); err != nil {
+		fmt.Printf("Server closed: %s\n", err)
+	}
 }
