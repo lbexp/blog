@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	utils_http "lbexp-blog/utils/http"
 	"net"
 	"net/http"
 	"os"
 )
 
 func main() {
-	router := NewRouter()
+	router := utils_http.NewRouter()
 	router.GET("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Base path")
 	})
